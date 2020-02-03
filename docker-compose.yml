@@ -1,0 +1,19 @@
+version: '3.1'
+
+services:
+
+  db:
+    image: timescale/timescaledb:latest-pg11
+    restart: always
+    environment:
+      TIMESCALEDB_TELEMETRY: "off"
+      POSTGRES_DB: kidiTrade
+      POSTGRES_USER: kidiTrade
+      POSTGRES_PASSWORD: kidiTrade
+    volumes:
+      - pg_data:/var/lib/postgresql/data
+    ports:
+      - "5432:5432"
+  
+volumes:
+  pg_data: {}
