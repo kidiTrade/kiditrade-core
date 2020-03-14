@@ -3,17 +3,17 @@ version: '3.1'
 services:
 
   db:
-    image: timescale/timescaledb:latest-pg11
+    image: timescale/timescaledb:1.6.0-pg11-bitnami
     restart: always
     environment:
       TIMESCALEDB_TELEMETRY: "off"
-      POSTGRES_DB: kidiTrade
-      POSTGRES_USER: kidiTrade
-      POSTGRES_PASSWORD: kidiTrade
+      POSTGRESQL_DATABASE: "kiditrade"
+      ALLOW_EMPTY_PASSWORD: "yes"
     volumes:
-      - pg_data:/var/lib/postgresql/data
+      - pg_data:/bitnami/postgresql
     ports:
       - "5432:5432"
   
 volumes:
-  pg_data: {}
+  pg_data:
+    driver: local

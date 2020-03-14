@@ -1,4 +1,4 @@
-use crate::ibloader;
+use crate::ibbridge;
 use rust_decimal::prelude::*;
 use rust_decimal::Decimal;
 use std::convert::{TryFrom, TryInto};
@@ -18,10 +18,10 @@ pub(crate) struct Candle {
     pub vwap: Decimal,
 }
 
-impl TryFrom<ibloader::Bar> for Candle {
+impl TryFrom<ibbridge::Bar> for Candle {
     type Error = NoneError;
 
-    fn try_from(bar: ibloader::Bar) -> Result<Self, Self::Error> {
+    fn try_from(bar: ibbridge::Bar) -> Result<Self, Self::Error> {
         Ok(Candle {
             timestamp: bar.timestamp?.clone().try_into().or(Err(NoneError))?,
             duration: Duration::from_secs(60),
