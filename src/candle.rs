@@ -1,11 +1,16 @@
 use crate::ibbridge;
+use crate::time_buckets::Timestamp;
+use chrono::{DateTime, Utc};
 use rust_decimal::prelude::*;
 use rust_decimal::Decimal;
 use std::convert::{TryFrom, TryInto};
 use std::option::NoneError;
-use std::time::{Duration, SystemTime};
+use std::{
+    fmt::Debug,
+    time::{Duration, SystemTime},
+};
 
-#[derive(Debug)]
+#[derive(Clone)]
 pub(crate) struct Candle {
     pub timestamp: SystemTime,
     pub duration: Duration,
@@ -33,5 +38,22 @@ impl TryFrom<ibbridge::Bar> for Candle {
             trades: Decimal::from_i64(bar.trades)?.round_dp(4),
             vwap: Decimal::from_f64(bar.vwap)?.round_dp(4),
         })
+    }
+}
+
+impl Timestamp for Candle {
+    fn timestamp(&self) -> SystemTime {
+        self.timestamp
+    }
+}
+
+impl Debug for Candle {
+    fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
+        let ts: DateTime<Utc> = self.timestamp.into();
+        write!(
+            f,
+            "{:?}: O: {:>6.2}, H: {:>6.2}, L: {:>6.2}, C: {:>6.2}, V: {:>6.2}",
+            ts, self.open, self.high, self.low, self.close, self.volume
+        )
     }
 }

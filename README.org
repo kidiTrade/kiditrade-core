@@ -1,0 +1,15 @@
+#+TITLE:   IbCore
+#+DATE:    February 3, 2020
+#+SINCE:   {replace with next tagged release version}
+#+STARTUP: inlineimages nofold
+
+* Table of Contents :TOC_3:noexport:
+- [[#features][Features]]
+  - [[#serialize-duration][serialize `Duration`]]
+  - [[#per-contract-candle-sizes][per contract candle sizes]]
+  - [[#fetch-non-stock-contracts-ie-eurusd][fetch non stock contracts (ie, EURUSD)]]
+
+* Features
+** TODO serialize `Duration`
+** TODO per contract candle sizes
+** TODO fetch non stock contracts (ie, EURUSD)

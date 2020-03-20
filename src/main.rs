@@ -7,6 +7,7 @@ mod import;
 mod ibbridge {
     tonic::include_proto!("ibbridge");
 }
+mod time_buckets;
 
 use cli::KidiTrade;
 use std::process;
@@ -24,17 +25,17 @@ fn main() {
 
     tracing::subscriber::set_global_default(subscriber).expect("setting default subscriber failed");
 
-    let mut rt = Runtime::new().unwrap();
-
     let args = KidiTrade::from_args();
-    let exec = async {
-        match args {
-            KidiTrade::Import {} => import::import().await,
-            KidiTrade::Backtest {} => backtest::backtest().await,
+    if let Err(e) = match args {
+        KidiTrade::Import {} => {
+            let mut rt = Runtime::new().unwrap();
+            rt.block_on(import::import())
         }
-    };
-
-    if let Err(e) = rt.block_on(exec) {
+        KidiTrade::Backtest {} => {
+            let mut rt = Runtime::new().unwrap();
+            rt.block_on(backtest::backtest())
+        }
+    } {
         error!("Error: {}", e);
         process::exit(1);
     }
